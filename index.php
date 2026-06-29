@@ -1,4 +1,3 @@
-
 <?php
 // ============== الإعدادات الأساسية ==============
 date_default_timezone_set('Asia/Riyadh');
@@ -15,6 +14,29 @@ $adminuz = "cyber_idleb";
 $sudo = array("cyber_idleb", $admin);
 $proof_channel = "idlebx2";
 
+// ============== تعيين Webhook التلقائي ==============
+$protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$app_url = $protocol . $host . '/';
+
+// تعيين Webhook
+$webhook_result = file_get_contents("https://api.telegram.org/bot" . API_KEY . "/setWebhook?url=" . urlencode($app_url));
+$webhook_data = json_decode($webhook_result, true);
+
+// ============== اختبار البوت ==============
+if (isset($_GET['test'])) {
+    echo "✅ Bot is working!\n";
+    echo "📅 " . date('Y-m-d H:i:s') . "\n";
+    echo "🔗 URL: " . $app_url . "\n";
+    echo "📡 Webhook set: " . ($webhook_data['ok'] ? '✅ Success' : '❌ Failed') . "\n";
+    echo "📊 Result: " . $webhook_result . "\n";
+    
+    // عرض معلومات Webhook
+    $webhook_info = file_get_contents("https://api.telegram.org/bot" . API_KEY . "/getWebhookInfo");
+    echo "\n📊 Webhook Info:\n" . $webhook_info;
+    exit;
+}
+
 // ============== إنشاء الملفات المطلوبة ==============
 function createRequiredFiles() {
     $files = [
@@ -23,7 +45,7 @@ function createRequiredFiles() {
         'users.json' => ['users' => []],
         'settings.json' => ['bot_name' => 'متجر Cyber idleb', 'welcome_message' => '🎉 مرحباً بك'],
         'channels.json' => ['channels' => []],
-        'admin.json' => ['admins' => ["7615821064"], 'banned' => []],
+        'admin.json' => ['admins' => ["7240148750"], 'banned' => []],
         'proofs.json' => ['proofs' => []]
     ];
     
@@ -41,6 +63,10 @@ function createRequiredFiles() {
     }
 }
 createRequiredFiles();
+
+// ... (باقي الكود الأصلي كاملاً من هنا)
+
+// ... (باقي الكود الأصلي للمعالجة)
 
 // ============== إضافة القنوات الإجبارية المطلوبة ==============
 function addRequiredChannels() {
